@@ -14,8 +14,9 @@ isThisLoggerEnable(true)
 {}
 
 LOGGER_HEADER_ONLY_INLINE std::shared_ptr<Logger> Logger::Get(const std::string& loggerName, std::ostream& os) {
-    if(Logger::loggerInstanceMap.contains(loggerName)){
-        return Logger::loggerInstanceMap.at(loggerName);
+    auto&& loggerItr = Logger::loggerInstanceMap.find(loggerName);
+    if(loggerItr != Logger::loggerInstanceMap.end()){
+        return loggerItr->second;
     }
     std::shared_ptr<Logger> newLogger{new Logger{loggerName, os}};
     Logger::loggerInstanceMap.emplace(loggerName, newLogger);
