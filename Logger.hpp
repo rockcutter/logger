@@ -17,7 +17,7 @@ private:
     std::ostream& ostream;
     bool isThisLoggerEnable;
 
-    std::string GetTimeString(const std::string& format = "%Y-%m-%d %H:%I:%S") noexcept;
+    std::string GetTimeString(const std::string& format = "%Y-%m-%d %H:%M:%S") noexcept;
     Logger(std::string_view loggerName, std::ostream& os = std::cout);
 public:
     static std::shared_ptr<Logger> Get(const std::string& loggerName, std::ostream& os = std::cout);
@@ -34,7 +34,7 @@ public:
         if(!this->isAllLoggerEnable || !this->isThisLoggerEnable){
             return;
         }
-        this->ostream << "[" << this->GetTimeString("%Y-%m-%d %H:%I:%S") << "] [" << loggerName <<  "] [" << logLevel << "] " ;
+        this->ostream << "[" << this->GetTimeString("%Y-%m-%d %H:%M:%S") << "] [" << loggerName <<  "] [" << logLevel << "] " ;
         (this->ostream << ... << args);
         this->ostream << std::endl;
     }
