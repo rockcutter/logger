@@ -1,0 +1,43 @@
+cmake_minimum_required(VERSION 3.1)
+enable_language(CXX)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+
+# TODO project_nameを書き換える
+project(LoggerTest)
+
+set(proj_src
+    Logger.cpp
+    LoggerTest.cpp
+)
+
+# GoogleTestをダウンロード
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  URL https://github.com/google/googletest/archive/refs/tags/release-1.12.0.zip
+)
+
+# 親プロジェクトのコンパイラ・リンカ設定を上書きするのを防ぐ（Windowsのみ）
+if(WIN32)
+  set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+endif()
+# googletestをターゲットとして使えるようにする
+FetchContent_MakeAvailable(googletest)
+
+enable_testing()
+
+# 単体テストの定義
+add_executable(${CMAKE_PROJECT_NAME} ${proj_src})
+target_link_libraries(${CMAKE_PROJECT_NAME} PRIVATE gtest_main)
+
+# CTestへ単体テストを登録
+include(GoogleTest)
+gtest_discover_tests(${CMAKE_PROJECT_NAME})
+
+# TODO project_nameを書き換える
+target_compile_features(${CMAKE_PROJECT_NAME} PUBLIC cxx_std_20)
+target_compile_options(${CMAKE_PROJECT_NAME} PUBLIC
+    $<$<CXX_COMPILER_ID:GNU>: -O3 -Wall -Wextra -Wpedantic>
+    $<$<CXX_COMPILER_ID:MSVC>: /W4 >
+)
