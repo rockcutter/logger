@@ -17,9 +17,9 @@ private:
     std::ostream& ostream;
     bool isThisLoggerEnable;
 
-std::string GetTimeString(const std::string& format = "%Y-%m-%d %H:%I:%S") noexcept;
-public:
+    std::string GetTimeString(const std::string& format = "%Y-%m-%d %H:%I:%S") noexcept;
     Logger(std::string_view loggerName, std::ostream& os = std::cout);
+public:
     static std::shared_ptr<Logger> Get(const std::string& loggerName, std::ostream& os = std::cout);
     static void EnableAllLogger() noexcept;    
     static void DisableAllLogger() noexcept;
